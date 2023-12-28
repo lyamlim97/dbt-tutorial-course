@@ -2,14 +2,15 @@
 	Original source code from dbt that I've edited for this course
 	https://github.com/dbt-labs/dbt-codegen/blob/0.9.0/macros/generate_base_model.sql
 */
+{% macro generate_base_model(
+    source_name, table_name, case_sensitive_cols=False, materialized=None
+) %}
 
-{% macro generate_base_model(source_name, table_name, case_sensitive_cols=False, materialized=None) %}
+    {%- set source_relation = source(source_name, table_name) -%}
 
-{%- set source_relation = source(source_name, table_name) -%}
-
-{%- set columns = adapter.get_columns_in_relation(source_relation) -%}
-{% set column_names=columns | map(attribute='name') %}
-{% set base_model_sql %}
+    {%- set columns = adapter.get_columns_in_relation(source_relation) -%}
+    {% set column_names = columns | map(attribute="name") %}
+    {% set base_model_sql %}
 
 {%- if materialized is not none -%}
 	{{ "{{ config(materialized='" ~ materialized ~ "') }}" }}
@@ -35,12 +36,11 @@ SELECT
 
 FROM source
 
-{% endset %}
+    {% endset %}
 
-{% if execute %}
+    {% if execute %}
 
-{{ log(base_model_sql, info=True) }}
-{% do return(base_model_sql) %}
+        {{ log(base_model_sql, info=True) }} {% do return(base_model_sql) %}
 
-{% endif %}
+    {% endif %}
 {% endmacro %}

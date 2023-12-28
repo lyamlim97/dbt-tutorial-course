@@ -1,20 +1,16 @@
-WITH source AS (
-        SELECT *
+with source as (select * from {{ source("thelook_ecommerce", "orders") }})
 
-        FROM {{ source('thelook_ecommerce', 'orders') }}
-)
+select
+    -- IDs
+    order_id,
+    user_id,
 
-SELECT
-        -- IDs
-        order_id,
-        user_id,
+    -- Other columns
+    status,
+    created_at,
+    returned_at,
+    shipped_at,
+    delivered_at,
+    num_of_item as num_items_ordered
 
-        -- Other columns
-        status,
-        created_at,
-        returned_at,
-        shipped_at,
-        delivered_at,
-        num_of_item AS num_items_ordered
-
-FROM source
+from source
