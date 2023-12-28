@@ -1,7 +1,9 @@
 {% test primary_key(model, column_name) %}
     with
         validation as (
-            select {{ column_name }} as primary_key, count({{ column_name }} ) as occurrences
+            select
+                {{ column_name }} as primary_key,
+                count({{ column_name }}) as occurrences
             from {{ model }}
             group by {{ column_name }}
         )

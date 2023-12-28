@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: stg_ecommerce__products
-    description: ""
+    description: "Table of products on the online store"
     columns:
       - name: product_id
         tests:
@@ -25,7 +25,6 @@ models:
           - dbt_utils.expression_is_true:
               name: retail_price_greater_than_cost
               expression: ">= cost"
-              where: "retail_price IS NOT NULL"
 
       - name: department
         description: "Whether the item is Menswear or Womenswear"
