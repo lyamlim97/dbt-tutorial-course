@@ -1,8 +1,13 @@
 {{
     config(
         materialized="incremental",
-        unique_key='event_id',
-        on_schema_change='sync_all_columns'
+        unique_key="event_id",
+        on_schema_change="sync_all_columns",
+        partition_by={
+            "field": "created_at",
+            "data_type": "timestamp",
+            "granularity": "day",
+        },
     )
 }}
 
@@ -22,9 +27,8 @@ select
     traffic_source,
     uri as web_link,
     event_type
-from
-    source
+from source
 
-    {% if is_incremental() %}
-        WHERE created_at >= (select max(created_at) from {{ this }})
-    {% endif %}
+{% if is_incremental() %}
+    where created_at >= (select max(created_at) from {{ this }})
+{% endif %}
