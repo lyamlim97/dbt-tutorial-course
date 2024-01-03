@@ -34,8 +34,10 @@ models:
     +persist_docs:
       relation: true
       columns: true
-    +hours_to_expiration: 168
-
+    +hours_to_expiration: |
+      {% if target.name == 'test' %} 1
+      {% else %} 168
+      {% endif %}
 tests:
   lessons:
     +severity: warn
