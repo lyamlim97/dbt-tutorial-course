@@ -15,7 +15,9 @@ select
     -- Data from our staging orders table
     od.order_id,
     od.created_at as order_created_at,
+    {{ is_weekend("od.created_at") }} as order_was_created_on_weekend,
     od.shipped_at as order_shipped_at,
+    {{ is_weekend("od.order_shipped_at") }} as order_was_shipped_on_weekend,
     od.delivered_at as order_delivered_at,
     od.returned_at as order_returned_at,
     od.status as order_status,
