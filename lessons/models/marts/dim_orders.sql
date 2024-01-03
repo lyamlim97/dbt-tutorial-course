@@ -38,7 +38,7 @@ select
     om.total_discount,
     {% for department in departments %}
         total_sold_{{ department.lower() }}swear{{ "," if not loop.last }}
-    {%- endfor %},
+    {%- endfor %}
     timestamp_diff(
         od.created_at, user_data.first_order_created_at, day
     ) as days_since_first_order
